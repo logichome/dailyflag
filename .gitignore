@@ -1,0 +1,12 @@
+.DS_Store
+node_modules/
+dist/
+npm-debug.log*
+*.wpy___jb_tmp___
+project.config.json
+.idea
+.tmp
+wecos_backup
+.vscode
+package-lock.json
+yarn.lock
