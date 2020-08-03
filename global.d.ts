@@ -16,3 +16,10 @@ declare const process: {
     [key: string]: any;
   }
 }
+
+interface TodoContent {
+  id: number,
+  title: string,
+  isFinished: boolean,
+  isDeleted: boolean
+}

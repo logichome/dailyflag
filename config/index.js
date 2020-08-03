@@ -1,4 +1,9 @@
+const path = require('path')
+
 const config = {
+  alias: {
+    '@/apis': path.resolve(__dirname, '..', 'src/apis'),
+  },
   projectName: 'dailyflag',
   date: '2020-7-31',
   designWidth: 750,
@@ -58,7 +63,8 @@ const config = {
           generateScopedName: '[name]__[local]___[hash:base64:5]'
         }
       }
-    }
+    },
+    esnextModules: ['taro-ui']
   }
 }
 

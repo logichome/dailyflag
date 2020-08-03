@@ -1,6 +1,5 @@
 import { Component } from 'react'
 import './app.styl'
-
 class App extends Component {
 
   componentDidMount () {}
