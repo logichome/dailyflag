@@ -3,6 +3,8 @@ const path = require('path')
 const config = {
   alias: {
     '@/apis': path.resolve(__dirname, '..', 'src/apis'),
+    '@/components': path.resolve(__dirname, '..', 'src/components'),
+    '@/utils': path.resolve(__dirname, '..', 'src/utils'),
   },
   projectName: 'dailyflag',
   date: '2020-7-31',

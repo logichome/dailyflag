@@ -21,5 +21,6 @@ interface TodoContent {
   id: number,
   title: string,
   isFinished: boolean,
-  isDeleted: boolean
+  isDeleted: boolean,
+  isEditing: boolean
 }
