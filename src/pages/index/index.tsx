@@ -56,7 +56,7 @@ export default function Index() {
 
   function addSubmit(e): void {
     console.log('addSubmit')
-    setInputVisible(false)
+    setTodoFormVisible(false)
     const {title}: {title:string} = e.detail.value
     if (title) {
       const newItem: TodoContent = {
@@ -74,7 +74,7 @@ export default function Index() {
   return (
     <View>
       <Popup visible={todoFormVisible} onTapMask={() => setTodoFormVisible(false)}>
-        <TodoForm />
+        <TodoForm onSubmit={addSubmit} />
       </Popup>
       <View className="add" onClick={add}>add</View>
       {/* {inputVisible && <Form onSubmit={addSubmit} >
@@ -89,9 +89,10 @@ export default function Index() {
             : <View className="todo-item-title">{todoItem.title}</View>}
           </View>
           <View className="right btns">
-            {todoItem.isEditing
+            {/* {todoItem.isEditing
             ? <Button type='primary'>submit</Button>
-            : <Button type='primary' onClick={() => {editTodo(todoItem.id)}}>edit</Button>}
+            : <Button type='primary' onClick={() => {editTodo(todoItem.id)}}>edit</Button>} */}
+            {!todoItem.isEditing && <Button type='primary' onClick={() => {editTodo(todoItem.id)}}>edit</Button>}
             <Button onClick={() => {deleteTodo(todoItem.id)}}>delete</Button>
           </View>
         </View>)}
