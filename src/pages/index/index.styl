@@ -1,5 +1,46 @@
-// .todo-list
-//   .todo-item, .btns
-//     display: flex
-//     align-items center
-//     justify-content: space-between
+.menu
+  padding 20px 40px
+  border-bottom 1px solid #ddd
+.todo-list
+  padding 20px 40px
+  .todo-item
+    border 1px solid #ddd
+    border-radius 10px
+    padding 0 20px
+    margin-bottom 20px
+    .todo-item-title.finished
+      text-decoration line-through
+      color #999
+    .item-main
+      font-size 32px
+      color #333
+      padding 20px
+      display flex
+      align-items center
+      justify-content space-between
+      .finish-status
+        color #999
+    .item-detail
+      &::before
+        content ''
+        display block
+        width 0
+        height 1px
+        background-color #ddd
+        transition width 0.3s
+        margin 0 auto
+      // border-top 1px solid transparent
+      height 0
+      overflow hidden
+      transition height 0.3s
+      .btns
+        padding 20px 0
+        display flex
+        align-items center
+      button
+        margin-right 20px
+      &.show
+        // border-top 1px solid #ddd
+        height 100px
+        &::before
+          width 650px

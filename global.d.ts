@@ -22,5 +22,4 @@ interface TodoContent {
   title: string,
   isFinished: boolean,
   isDeleted: boolean,
-  isEditing: boolean
 }
