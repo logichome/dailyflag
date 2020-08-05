@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import '@/utils/moment'
 import './app.styl'
 class App extends Component {
 

@@ -20,27 +20,45 @@
       justify-content space-between
       .finish-status
         color #999
+        font-size 26px
     .item-detail
+      .item-info
+        padding 20px 20px 10px
+        .info-item
+          display flex
+          align-items center
+          justify-content space-between
+          font-size 26px
+          line-height 48px
+          color #999
       &::before
         content ''
         display block
         width 0
-        height 1px
-        background-color #ddd
+        // background-color #ddd
+        border-bottom 2rpx solid #ddd
         transition width 0.3s
+        box-sizing border-box
         margin 0 auto
       // border-top 1px solid transparent
-      height 0
+      max-height 0
       overflow hidden
-      transition height 0.3s
+      transition all 0.3s
       .btns
-        padding 20px 0
+        padding 20px 20px
         display flex
         align-items center
+        justify-content space-between
+        .left
+          display flex
+          align-items center
+        .right
+          font-size 28rpx
+          color #999
       button
         margin-right 20px
       &.show
         // border-top 1px solid #ddd
-        height 100px
+        max-height 300px
         &::before
           width 650px

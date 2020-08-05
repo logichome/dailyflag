@@ -16,10 +16,14 @@ declare const process: {
     [key: string]: any;
   }
 }
-
 interface TodoContent {
-  id: number,
+  readonly id: number,
   title: string,
+  content?: string,
+  expectDate: number,
   isFinished: boolean,
   isDeleted: boolean,
+  createdAt: number,
+  updateAt: number
 }
+
