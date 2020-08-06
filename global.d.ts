@@ -16,14 +16,4 @@ declare const process: {
     [key: string]: any;
   }
 }
-interface ITodoContent {
-  readonly id: number,
-  title: string,
-  content?: string,
-  expectDate: string,
-  isFinished: boolean,
-  isDeleted: boolean,
-  createdAt: number,
-  updateAt: number
-}
 

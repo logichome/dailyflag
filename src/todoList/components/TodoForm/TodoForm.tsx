@@ -23,6 +23,8 @@ export default function TodoForm(props) {
   useEffect(() => {
     if (currentTodo) {
       setFormData({...formData, ...currentTodo})
+    } else {
+      setFormData(initFormData())
     }
   }, [currentTodo])
 
