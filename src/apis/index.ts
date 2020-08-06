@@ -1,9 +1,9 @@
 import Taro from '@tarojs/taro'
 
-export const getTodoList = ():TodoContent[] => {
+export const getTodoList = ():ITodoContent[] => {
   return Taro.getStorageSync('TODO_LIST') || []
 }
 
-export const setTodoList = (list: TodoContent[]): void => {
+export const setTodoList = (list: ITodoContent[]): void => {
   Taro.setStorageSync('TODO_LIST', list) || []
 }

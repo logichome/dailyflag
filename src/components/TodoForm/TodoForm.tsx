@@ -6,32 +6,37 @@ import './todoForm.styl'
 
 export default function TodoForm(props) {
   enum FormRuleTypes {require, number}
+  interface IFormDate {
+    title: string,
+    expectDate: string
+  }
+  // 表单值初始化
+  function initFormData(): IFormDate {
+    return {
+      title: '',
+      expectDate: ''
+    }
+  }
   const {onSubmit, currentTodo} = props
-  const [expectDate, setExpectDate] = useState<string>('')
-  const [formData, setFormData] = useState<any>({
-    title: '',
-    expectDate: ''
-  })
+  const [formData, setFormData] = useState<IFormDate>(initFormData())
+  // 编辑数据初始化
   useEffect(() => {
-    console.log('useEffect???', currentTodo)
     if (currentTodo) {
       setFormData({...formData, ...currentTodo})
-    } else {
-      setFormData({
-        title: '',
-        expectDate: ''
-      })
     }
-    
   }, [currentTodo])
-  currentTodo
-  function onDateChange(e) {
-    setExpectDate(moment(e.detail.value).format('ll'))
+
+  // 格式化显示的日期
+  const formatExpectDate: string = useMemo(() => formData.expectDate ? moment(formData.expectDate).format('ll') : '', [formData])
+
+  // 表单修改
+  function formDateChange(key, value) {
+    setFormData({...formData, [key]: value})
   }
 
   // 表单校验
-  function checkForm(e) {
-    const result = e.detail.value
+  function checkForm(result): boolean {
+    // 校验规则
     const rules = {
       title: [{type: FormRuleTypes.require, msg: '请输入目标概要'}],
       expectDate: [{type: FormRuleTypes.require, msg: '请选择完成日期'}]
@@ -60,30 +65,32 @@ export default function TodoForm(props) {
           }
         }
       }
-      return true
     }
+    return true
   }
   return (
     <View>
-      <Form className="todo-form" onSubmit={e => {
-        if (checkForm(e)) onSubmit(e)
-      }} >
+      <Form className="todo-form">
         <View className="title">{currentTodo ? '编辑' : '新增'}</View>
         <View className="form-item">
           <View className="label">目标概要</View>
-          <Input className="value" type='text' name="title" value={formData.title} placeholder='起个惊天地泣鬼神的标题' maxlength={14}/>
+          <Input onInput={e => formDateChange('title', e.detail.value)} className="value" type='text' name="title" value={formData.title} placeholder='起个惊天地泣鬼神的标题' maxlength={14}/>
         </View>
         <View className="form-item">
           <View className="label">完成日期</View>
-          <Picker mode='date' value={formData.expectDate} className={`value ${!expectDate && 'picker-placeholder'}`} name="expectDate" onChange={onDateChange}>
+          <Picker onChange={e => formDateChange('expectDate', e.detail.value)} mode='date' value={formData.expectDate} className={`value ${!formatExpectDate && 'picker-placeholder'}`} name="expectDate">
             <View className='picker'>
-              {expectDate || '怎么说也总该有个期限吧'}
+              {formatExpectDate || '怎么说也总该有个期限吧'}
             </View>
           </Picker>
         </View>
-        
         <View className="btns">
-          <Button className="middle" type='primary' form-type="submit">submit</Button>
+          <Button className="middle" type='primary' onClick={() => {
+            if (checkForm(formData)) {
+              onSubmit(formData)
+              setFormData(initFormData())
+            }
+          }}>提交</Button>
         </View>
       </Form>
     </View>

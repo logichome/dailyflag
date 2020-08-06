@@ -16,11 +16,11 @@ declare const process: {
     [key: string]: any;
   }
 }
-interface TodoContent {
+interface ITodoContent {
   readonly id: number,
   title: string,
   content?: string,
-  expectDate: number,
+  expectDate: string,
   isFinished: boolean,
   isDeleted: boolean,
   createdAt: number,

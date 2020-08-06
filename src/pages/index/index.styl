@@ -1,8 +1,37 @@
 .menu
+  position fixed
+  z-index 2
+  top 0
+  left 0
+  width 100%
+  background-color #fff
+  box-sizing border-box
   padding 20px 40px
   border-bottom 1px solid #ddd
+  display flex
+  align-items center
+  justify-content space-between
+  .filter-list
+    display flex
+    align-items center
+    button
+      border-radius 0
+      &:first-of-type
+        border-radius 10px 0 0 10px
+      &:last-of-type
+        border-radius 0 10px 10px 0
 .todo-list
-  padding 20px 40px
+  padding 120px 40px 20px
+  .no-data
+    text-align center
+    padding 40px
+    color: #999
+    font-size 26px
+  .group-item
+    .group-date
+      padding 20px 0
+      color #999
+      font-size: 26px
   .todo-item
     border 1px solid #ddd
     border-radius 10px
