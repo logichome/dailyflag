@@ -5,6 +5,8 @@ const config = {
     '@/apis': path.resolve(__dirname, '..', 'src/apis'),
     '@/components': path.resolve(__dirname, '..', 'src/components'),
     '@/utils': path.resolve(__dirname, '..', 'src/utils'),
+    '@/todoList': path.resolve(__dirname, '..', 'src/todoList'),
+    '@/wxCloud': path.resolve(__dirname, '..', 'src/wxCloud'),
   },
   projectName: 'dailyflag',
   date: '2020-7-31',

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { View, Text, Input, Form, Button } from '@tarojs/components'
-import { ITodoContent, FilterTag } from '../../type' 
+import { ITodoContent, FilterTag } from '../../type'
+import { formatDate } from '@/utils/common'
 import Taro from '@tarojs/taro'
 import moment from 'moment'
 import './todoListIndex.styl'
@@ -14,6 +15,7 @@ export default function Index() {
     list: ITodoContent[]
   }
 
+  const todayDate = formatDate(date)
   const [todoList, setTodoList] = useState<ITodoContent[]>([])  // 列表
   const [todoFormVisible, setTodoFormVisible] = useState<boolean>(false)  // 表单弹窗展示
   const [currentTodo, setCurrentTodo] = useState<ITodoContent | null>(null)  // 当前编辑的项目
@@ -22,6 +24,10 @@ export default function Index() {
 
   // 列表格式化
   const showList:ITodoContentGroup[] = useMemo(() => {
+    // 排序
+    todoList.sort((a, b) => a.id - b.id)
+    // 已完成的放最下面
+    todoList.sort(item => item.isFinished ? 1 : -1)
     let groupList: ITodoContentGroup[] = []
     todoList.map(item => {
       // 查找是否已经存在该日期的项目
@@ -35,6 +41,8 @@ export default function Index() {
         })
       }
     })
+    // 按日期排序
+    groupList.sort((a, b) => moment(a.expectDate).valueOf() - moment(b.expectDate).valueOf())
     return groupList
   }, [todoList])
 
@@ -78,7 +86,8 @@ export default function Index() {
       if (res.confirm) {
         console.log('deleteTodo')
         await apiEditTodo({id, isDeleted: true})
-        getTodoList()
+        await getTodoList()
+        setSpreadId(0)
       }
     })
   }
@@ -94,7 +103,8 @@ export default function Index() {
   async function finishTodo(id: number) {
     console.log('finishTodo')
     await apiEditTodo({id, isFinished: true})
-    getTodoList()
+    await getTodoList()
+    setSpreadId(0)
   }
 
   // 编辑提交
@@ -102,7 +112,7 @@ export default function Index() {
     console.log('editSubmit')
     setTodoFormVisible(false)
     await apiEditTodo(formDate)
-    getTodoList()
+    await getTodoList()
   }
 
   // 增加提交
@@ -110,7 +120,7 @@ export default function Index() {
     console.log('addSubmit', formDate)
     setTodoFormVisible(false)
     await apiAddTodo(formDate)
-    getTodoList()
+    await getTodoList()
   }
 
   // tag 切换
@@ -141,7 +151,10 @@ export default function Index() {
       <View className="todo-list">
         {showList.length === 0 && <View className="no-data">暂无数据</View>}
         {showList.map((group, index) => (<View key={index} className="group-item">
-          <View className="group-date">{moment(group.expectDate).format('ll')}</View>
+          <View className="group-date">
+            <Text>{moment(group.expectDate).format('ll')}</Text>
+            {moment(group.expectDate) < moment(todayDate) && <Text className="t">已过期</Text>}
+          </View>
           {group.list.map(todoItem => <View className="todo-item" key={todoItem.id}>
             <View className="item-main" onClick={() => spreadTodo(todoItem.id)}>
               <View className={`todo-item-title ${todoItem.isFinished && 'finished'}`}>{todoItem.title}</View>

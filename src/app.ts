@@ -1,9 +1,13 @@
 import { Component } from 'react'
+import { initCloud } from '@/wxCloud'
 import '@/utils/moment'
 import './app.styl'
 class App extends Component {
 
-  componentDidMount () {}
+  componentDidMount () {
+    // 云能力初始化
+    initCloud()
+  }
 
   componentDidShow () {}
 

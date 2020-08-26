@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { View, Picker, Input, Form, Button } from '@tarojs/components'
+import { formatDate } from '@/utils/common'
 import Taro from '@tarojs/taro'
 import moment from 'moment'
 import './todoForm.styl'
 
 export default function TodoForm(props) {
   enum FormRuleTypes {require, number}
+  const start = formatDate()
   interface IFormDate {
     title: string,
     expectDate: string
@@ -80,7 +82,7 @@ export default function TodoForm(props) {
         </View>
         <View className="form-item">
           <View className="label">完成日期</View>
-          <Picker onChange={e => formDateChange('expectDate', e.detail.value)} mode='date' value={formData.expectDate} className={`value ${!formatExpectDate && 'picker-placeholder'}`} name="expectDate">
+          <Picker start={start} onChange={e => formDateChange('expectDate', e.detail.value)} mode='date' value={formData.expectDate} className={`value ${!formatExpectDate && 'picker-placeholder'}`} name="expectDate">
             <View className='picker'>
               {formatExpectDate || '怎么说也总该有个期限吧'}
             </View>
