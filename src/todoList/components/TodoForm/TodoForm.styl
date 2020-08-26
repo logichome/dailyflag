@@ -1,3 +1,4 @@
+@import '~@/style/varivles'
 .title
   font-size 34px
   text-align center
@@ -10,9 +11,9 @@
     display flex
     align-items center
     justify-content space-between
-    border-bottom 1px solid #ddd
+    border-bottom $normalBorder
     line-height 100px
-    color #333
+    color $fontColor
     font-size 30px
     .label
       width 120px
@@ -20,3 +21,17 @@
       width 500px
   .btns
     padding-top 20rpx
+  .radio-group
+    display flex
+    align-items center
+    width 500px
+    .radio-item
+      line-height 60px;
+      padding: 0 20px
+      margin-right: 20px;
+      border-radius: 6px;
+      border 1px solid $mainColor
+      color $mainColor
+      &.checked
+        background-color $mainColor
+        color #fff

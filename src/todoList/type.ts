@@ -10,3 +10,5 @@ export interface ITodoContent {
 }
 
 export enum FilterTag {all, finished, unfinished, rubbish}
+
+export enum MissionType {important, normal, alternative}

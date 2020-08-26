@@ -6,6 +6,7 @@ const config = {
     '@/components': path.resolve(__dirname, '..', 'src/components'),
     '@/utils': path.resolve(__dirname, '..', 'src/utils'),
     '@/todoList': path.resolve(__dirname, '..', 'src/todoList'),
+    '@/style': path.resolve(__dirname, '..', 'src/style'),
     '@/wxCloud': path.resolve(__dirname, '..', 'src/wxCloud'),
   },
   projectName: 'dailyflag',

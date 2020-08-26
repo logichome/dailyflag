@@ -1,3 +1,6 @@
+@import '~@/style/varivles'
+page, html
+  background-color $greyPageColor
 .menu
   position fixed
   z-index 2
@@ -7,7 +10,7 @@
   background-color #fff
   box-sizing border-box
   padding 20px 40px
-  border-bottom 1px solid #ddd
+  box-shadow:  6px 0px 10px rgba(89, 89, 89, .15);
   display flex
   align-items center
   justify-content space-between
@@ -25,30 +28,31 @@
   .no-data
     text-align center
     padding 40px
-    color: #999
+    color $weekFontColor
     font-size 26px
   .group-item
     .group-date
       padding 20px 0
-      color #999
+      color $weekFontColor
       font-size: 26px
   .todo-item
-    border 1px solid #ddd
+    background-color #fff
+    // border $colorBorder
     border-radius 10px
     padding 0 20px
     margin-bottom 20px
     .todo-item-title.finished
       text-decoration line-through
-      color #999
+      color $weekFontColor
     .item-main
       font-size 32px
-      color #333
+      color $fontColor
       padding 20px
       display flex
       align-items center
       justify-content space-between
       .finish-status
-        color #999
+        color $weekFontColor
         font-size 26px
     .item-detail
       .item-info
@@ -59,20 +63,20 @@
           justify-content space-between
           font-size 26px
           line-height 48px
-          color #999
+          color $weekFontColor
       &::before
         content ''
         display block
         width 0
         // background-color #ddd
-        border-bottom 2rpx solid #ddd
-        transition width 0.3s
+        border-bottom $normalBorder
+        transition width $transitionTime
         box-sizing border-box
         margin 0 auto
       // border-top 1px solid transparent
       max-height 0
       overflow hidden
-      transition all 0.3s
+      transition all $transitionTime
       .btns
         padding 20px 20px
         display flex
@@ -83,7 +87,7 @@
           align-items center
         .right
           font-size 28rpx
-          color #999
+          color $weekFontColor
       button
         margin-right 20px
       &.show

@@ -42,7 +42,7 @@ export default function Index() {
       }
     })
     // 按日期排序
-    groupList.sort((a, b) => moment(a.expectDate).valueOf() - moment(b.expectDate).valueOf())
+    groupList.sort((b, a) => moment(a.expectDate).valueOf() - moment(b.expectDate).valueOf())
     return groupList
   }, [todoList])
 

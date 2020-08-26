@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { View, Picker, Input, Form, Button } from '@tarojs/components'
 import { formatDate } from '@/utils/common'
+import { MissionType } from '../../type'
+
 import Taro from '@tarojs/taro'
 import moment from 'moment'
 import './todoForm.styl'
@@ -10,13 +12,15 @@ export default function TodoForm(props) {
   const start = formatDate()
   interface IFormDate {
     title: string,
-    expectDate: string
+    expectDate: string,
+    missionType: MissionType
   }
   // 表单值初始化
   function initFormData(): IFormDate {
     return {
       title: '',
-      expectDate: ''
+      expectDate: start,
+      missionType: MissionType.normal
     }
   }
   const {onSubmit, currentTodo} = props
@@ -34,7 +38,7 @@ export default function TodoForm(props) {
   const formatExpectDate: string = useMemo(() => formData.expectDate ? moment(formData.expectDate).format('ll') : '', [formData])
 
   // 表单修改
-  function formDateChange(key, value) {
+  function formDataChange(key, value) {
     setFormData({...formData, [key]: value})
   }
 
@@ -42,7 +46,7 @@ export default function TodoForm(props) {
   function checkForm(result): boolean {
     // 校验规则
     const rules = {
-      title: [{type: FormRuleTypes.require, msg: '请输入目标概要'}],
+      title: [{type: FormRuleTypes.require, msg: '请输入任务概要'}],
       expectDate: [{type: FormRuleTypes.require, msg: '请选择完成日期'}]
     }
     for (const key in result) {
@@ -77,12 +81,26 @@ export default function TodoForm(props) {
       <Form className="todo-form">
         <View className="title">{currentTodo ? '编辑' : '新增'}</View>
         <View className="form-item">
-          <View className="label">目标概要</View>
-          <Input onInput={e => formDateChange('title', e.detail.value)} className="value" type='text' name="title" value={formData.title} placeholder='起个惊天地泣鬼神的标题' maxlength={14}/>
+          <View className="label">任务概要</View>
+          <Input onInput={e => formDataChange('title', e.detail.value)} className="value" type='text' name="title" value={formData.title} placeholder='起个惊天地泣鬼神的标题' maxlength={14}/>
+        </View>
+        <View className="form-item">
+          <View className="label">任务类型</View>
+          <View className="radio-group">
+            <View className={`radio-item ${formData.missionType === MissionType.important && 'checked'}`} onClick={_ => formDataChange('missionType', MissionType.important)}>
+              重要
+            </View>
+            <View className={`radio-item ${formData.missionType === MissionType.normal && 'checked'}`} onClick={_ => formDataChange('missionType', MissionType.normal)}>
+              一般
+            </View>
+            <View className={`radio-item ${formData.missionType === MissionType.alternative && 'checked'}`} onClick={_ => formDataChange('missionType', MissionType.alternative)}>
+              备选
+            </View>
+          </View>
         </View>
         <View className="form-item">
           <View className="label">完成日期</View>
-          <Picker start={start} onChange={e => formDateChange('expectDate', e.detail.value)} mode='date' value={formData.expectDate} className={`value ${!formatExpectDate && 'picker-placeholder'}`} name="expectDate">
+          <Picker start={start} onChange={e => formDataChange('expectDate', e.detail.value)} mode='date' value={formData.expectDate} className={`value ${!formatExpectDate && 'picker-placeholder'}`} name="expectDate">
             <View className='picker'>
               {formatExpectDate || '怎么说也总该有个期限吧'}
             </View>

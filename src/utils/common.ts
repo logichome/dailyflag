@@ -14,7 +14,7 @@ export function prefixZero(num: number | string, n: number): string {
 */
 export function formatDate(date: Date = new Date(),formatTemp: string = 'YYYY-MM-DD') {
   const year = String(date.getFullYear())
-  const month = prefixZero(date.getMonth(), 2)
+  const month = prefixZero(date.getMonth() + 1, 2)
   const day = prefixZero(date.getDate(), 2)
   return formatTemp.replace(/YYYY/g, year).replace(/MM/g, month).replace(/DD/g, day)
 }
