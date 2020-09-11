@@ -26,20 +26,26 @@ export const apiGetTodoList = (data) => {
 }
 
 export const apiAddTodo = (data) => {
-  const originList = Taro.getStorageSync('TODO_LIST') || []
-  const date: Date = new Date()
-  const nowDate = date.getTime()
-  console.log('nowDate!!', nowDate)
+  // const originList = Taro.getStorageSync('TODO_LIST') || []
+  // const date: Date = new Date()
+  // const nowDate = date.getTime()
+  // console.log('nowDate!!', nowDate)
   const newItem: ITodoContent = {
-    id: nowDate,
-    isFinished: false,
-    isDeleted: false,
-    createdAt: nowDate,
-    updateAt: nowDate,
+    // id: nowDate,
+    // isFinished: false,
+    // isDeleted: false,
+    // createdAt: nowDate,
+    // updateAt: nowDate,
     ...data
   }
-  originList.push(newItem)
-  Taro.setStorageSync('TODO_LIST', originList)
+  // originList.push(newItem)
+  // Taro.setStorageSync('TODO_LIST', originList)
+  wx.cloud.callFunction({
+    name: 'todos_add',
+    data: {
+      todo: newItem
+    }
+  })
   return Promise.resolve()
 }
 

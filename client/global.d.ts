@@ -17,3 +17,5 @@ declare const process: {
   }
 }
 
+declare const wx: any;
+// declare const db: any;

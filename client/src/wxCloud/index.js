@@ -6,5 +6,14 @@ export function initCloud() {
       traceUser: true
     })
     hasInit = true
+    wx.cloud.callFunction({
+      name: 'login',
+    })
+    wx.cloud.callFunction({
+      name: 'todos_add',
+      data: {
+        a: 111
+      }
+    })
   }
 }
