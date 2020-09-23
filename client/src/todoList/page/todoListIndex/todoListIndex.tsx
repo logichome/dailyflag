@@ -25,7 +25,7 @@ export default function Index() {
   // 列表格式化
   const showList:ITodoContentGroup[] = useMemo(() => {
     // 排序
-    todoList.sort((a, b) => a.id - b.id)
+    todoList.sort((a, b) => +a.id - +b.id)
     // 已完成的放最下面
     todoList.sort(item => item.isFinished ? 1 : -1)
     let groupList: ITodoContentGroup[] = []
@@ -80,7 +80,7 @@ export default function Index() {
   }
 
   // 删除项目
-  async function deleteTodo(id: number) {
+  async function deleteTodo(id: string) {
     Taro.showModal({
       content: '要咕咕咕了吗？'
     }).then(async res => {
@@ -94,14 +94,14 @@ export default function Index() {
   }
 
   // 编辑项目
-  function editTodo(id: number): void {
+  function editTodo(id: string): void {
     console.log('editTodo')
     setCurrentTodo(todoList.find(todo => todo.id === id) || null)
     setTodoFormVisible(true)
   }
 
   // 完成项目
-  async function finishTodo(id: number) {
+  async function finishTodo(id: string) {
     console.log('finishTodo')
     await apiEditTodo({id, isFinished: true})
     await getTodoList()

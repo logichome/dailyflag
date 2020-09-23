@@ -1,5 +1,5 @@
 export interface ITodoContent {
-  readonly id: number,
+  readonly id: string,
   title: string,
   content?: string,
   expectDate: string,
