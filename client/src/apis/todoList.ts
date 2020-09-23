@@ -1,28 +1,33 @@
 import Taro from '@tarojs/taro'
 import {ITodoContent, FilterTag}  from '../todoList/type'
-
+import request from '../wxCloud/request'
 export const apiGetTodoList = (data) => {
-  const originList = Taro.getStorageSync('TODO_LIST') || []
-  const filterList = originList.filter(item => {
-    let flag: boolean = false
-    switch (data.filter) {
-      case FilterTag.all:
-        flag = !item.isDeleted
-        break
-      case FilterTag.finished:
-        flag = item.isFinished && !item.isDeleted
-        break
-      case FilterTag.unfinished:
-        flag = !item.isFinished && !item.isDeleted
-        break
-      case FilterTag.rubbish:
-        flag = item.isDeleted
-        break
-      }
-    return flag
+  // const originList = Taro.getStorageSync('TODO_LIST') || []
+  // const filterList = originList.filter(item => {
+  //   let flag: boolean = false
+  //   switch (data.filter) {
+  //     case FilterTag.all:
+  //       flag = !item.isDeleted
+  //       break
+  //     case FilterTag.finished:
+  //       flag = item.isFinished && !item.isDeleted
+  //       break
+  //     case FilterTag.unfinished:
+  //       flag = !item.isFinished && !item.isDeleted
+  //       break
+  //     case FilterTag.rubbish:
+  //       flag = item.isDeleted
+  //       break
+  //     }
+  //   return flag
+  // })
+  return request({
+    name: 'todos',
+    data: {
+      $url: 'get',
+      ...data
+    }
   })
-  console.log('data.filter', data.filter, filterList)
-  return Promise.resolve(filterList)
 }
 
 export const apiAddTodo = (data) => {
@@ -40,20 +45,28 @@ export const apiAddTodo = (data) => {
   }
   // originList.push(newItem)
   // Taro.setStorageSync('TODO_LIST', originList)
-  wx.cloud.callFunction({
-    name: 'todos_add',
+  return request({
+    name: 'todos',
     data: {
+      $url: 'add',
       todo: newItem
     }
   })
-  return Promise.resolve()
+  // return Promise.resolve()
 }
 
 export const apiEditTodo = (data: any) => {
-  const originList = Taro.getStorageSync('TODO_LIST') || []
-  const date: Date = new Date()
-  const updateAt = date.getTime()
-  const newList = originList.map(todo => todo.id === data.id ? {...todo, ...data, updateAt} : todo)
-  Taro.setStorageSync('TODO_LIST', newList)
-  return Promise.resolve()
+  // const originList = Taro.getStorageSync('TODO_LIST') || []
+  // const date: Date = new Date()
+  // const updateAt = date.getTime()
+  // const newList = originList.map(todo => todo.id === data.id ? {...todo, ...data, updateAt} : todo)
+  // Taro.setStorageSync('TODO_LIST', newList)
+  return request({
+    name: 'todos',
+    data: {
+      $url: 'edit',
+      ...data
+    }
+  })
+  // return Promise.resolve()
 }

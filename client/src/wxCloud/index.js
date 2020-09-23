@@ -9,11 +9,5 @@ export function initCloud() {
     wx.cloud.callFunction({
       name: 'login',
     })
-    wx.cloud.callFunction({
-      name: 'todos_add',
-      data: {
-        a: 111
-      }
-    })
   }
 }

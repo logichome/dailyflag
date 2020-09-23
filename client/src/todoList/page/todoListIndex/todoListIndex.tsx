@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { View, Text, Input, Form, Button } from '@tarojs/components'
 import { ITodoContent, FilterTag } from '../../type'
-import { formatDate } from '@/utils/common'
+import { formatDate, showLoading } from '@/utils/common'
 import Taro from '@tarojs/taro'
 import moment from 'moment'
 import './todoListIndex.styl'
@@ -19,7 +19,7 @@ export default function Index() {
   const [todoList, setTodoList] = useState<ITodoContent[]>([])  // 列表
   const [todoFormVisible, setTodoFormVisible] = useState<boolean>(false)  // 表单弹窗展示
   const [currentTodo, setCurrentTodo] = useState<ITodoContent | null>(null)  // 当前编辑的项目
-  const [spreadId, setSpreadId] = useState<number>(0)  // 当前展开的项目id
+  const [spreadId, setSpreadId] = useState<string>('')  // 当前展开的项目id
   const [currentFilterTag, setCurrentFilterTag] = useState<FilterTag>(FilterTag.all)  // 当前展开的项目id
 
   // 列表格式化
@@ -59,16 +59,17 @@ export default function Index() {
   // 获取列表
   async function getTodoList() {
     try {
-      const list = await apiGetTodoList({filter: currentFilterTag})
-      setTodoList(list)
+      const data: any  = await apiGetTodoList({filter: currentFilterTag})
+      console.log('datadatadata', data)
+      setTodoList(data.list)
     } catch (error) {
       console.error(error)
     }
   }
 
   // 展开详情
-  function spreadTodo(id: number): void {
-    setSpreadId(spreadId === id ? 0 : id)
+  function spreadTodo(id: string): void {
+    setSpreadId(spreadId === id ? '' : id)
   }
 
   // 增加项目
@@ -87,7 +88,7 @@ export default function Index() {
         console.log('deleteTodo')
         await apiEditTodo({id, isDeleted: true})
         await getTodoList()
-        setSpreadId(0)
+        setSpreadId('')
       }
     })
   }
@@ -104,30 +105,34 @@ export default function Index() {
     console.log('finishTodo')
     await apiEditTodo({id, isFinished: true})
     await getTodoList()
-    setSpreadId(0)
+    setSpreadId('')
   }
 
   // 编辑提交
   async function editSubmit(formDate) {
     console.log('editSubmit')
     setTodoFormVisible(false)
+    showLoading()
     await apiEditTodo(formDate)
     await getTodoList()
+    showLoading('close')
   }
 
   // 增加提交
   async function addSubmit(formDate) {
     console.log('addSubmit', formDate)
     setTodoFormVisible(false)
+    showLoading()
     await apiAddTodo(formDate)
     await getTodoList()
+    showLoading('close')
   }
 
   // tag 切换
   function changeFilterTag(tag: FilterTag) {
     if (tag !== currentFilterTag) {
       setCurrentFilterTag(tag)
-      setSpreadId(0)
+      setSpreadId('')
     }
   }
 
