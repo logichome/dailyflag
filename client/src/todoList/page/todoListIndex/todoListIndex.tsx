@@ -2,10 +2,10 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { View, Text, Input, Form, Button } from '@tarojs/components'
 import { ITodoContent, FilterTag } from '../../type'
 import { formatDate, showLoading } from '@/utils/common'
-import Taro from '@tarojs/taro'
+import Taro, {useReachBottom} from '@tarojs/taro'
 import moment from 'moment'
 import './todoListIndex.styl'
-import { apiGetTodoList, apiEditTodo, apiAddTodo } from '@/apis/todoList'
+import { apiGetTodoList, apiEditTodo, apiAddTodo, apiDelTodo } from '@/apis/todoList'
 import TodoForm from '../../components/TodoForm/todoForm'
 import Popup from '@/components/Popup/Popup'
 export default function Index() {
@@ -20,6 +20,7 @@ export default function Index() {
   const [todoFormVisible, setTodoFormVisible] = useState<boolean>(false)  // 表单弹窗展示
   const [currentTodo, setCurrentTodo] = useState<ITodoContent | null>(null)  // 当前编辑的项目
   const [spreadId, setSpreadId] = useState<string>('')  // 当前展开的项目id
+  const [currentPage, setCurrentPage] = useState<number>(1)  // 当前页码
   const [currentFilterTag, setCurrentFilterTag] = useState<FilterTag>(FilterTag.all)  // 当前展开的项目id
 
   // 列表格式化
@@ -46,8 +47,13 @@ export default function Index() {
     return groupList
   }, [todoList])
 
+  useReachBottom(() => {
+    console.log('onReachBottom')
+  })
+
   // 初始化
   useEffect(() => {
+    setTodoList([])
     getTodoList()
   }, [currentFilterTag])
 
@@ -57,14 +63,16 @@ export default function Index() {
   }, [todoList])
 
   // 获取列表
-  async function getTodoList() {
+  async function getTodoList(page :number = 1) {
+    showLoading()
     try {
-      const data: any  = await apiGetTodoList({filter: currentFilterTag})
+      const data: any  = await apiGetTodoList({filter: currentFilterTag, page})
       console.log('datadatadata', data)
       setTodoList(data.list)
     } catch (error) {
       console.error(error)
     }
+    showLoading('close')
   }
 
   // 展开详情
@@ -82,13 +90,15 @@ export default function Index() {
   // 删除项目
   async function deleteTodo(id: string) {
     Taro.showModal({
-      content: '要咕咕咕了吗？'
+      content: '咕咕咕？'
     }).then(async res => {
       if (res.confirm) {
         console.log('deleteTodo')
-        await apiEditTodo({id, isDeleted: true})
+        showLoading()
+        await apiDelTodo({id})
         await getTodoList()
         setSpreadId('')
+        showLoading('close')
       }
     })
   }
@@ -103,9 +113,11 @@ export default function Index() {
   // 完成项目
   async function finishTodo(id: string) {
     console.log('finishTodo')
+    showLoading()
     await apiEditTodo({id, isFinished: true})
     await getTodoList()
     setSpreadId('')
+    showLoading('close')
   }
 
   // 编辑提交

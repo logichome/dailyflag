@@ -70,3 +70,19 @@ export const apiEditTodo = (data: any) => {
   })
   // return Promise.resolve()
 }
+
+export const apiDelTodo = (data: any) => {
+  // const originList = Taro.getStorageSync('TODO_LIST') || []
+  // const date: Date = new Date()
+  // const updateAt = date.getTime()
+  // const newList = originList.map(todo => todo.id === data.id ? {...todo, ...data, updateAt} : todo)
+  // Taro.setStorageSync('TODO_LIST', newList)
+  return request({
+    name: 'todos',
+    data: {
+      $url: 'delete',
+      ...data
+    }
+  })
+  // return Promise.resolve()
+}

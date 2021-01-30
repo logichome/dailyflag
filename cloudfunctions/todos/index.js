@@ -30,7 +30,7 @@ exports.main = (event, context) => {
   app.router('add', async (ctx) => {
     const date = new Date()
     const nowDate = date.getTime()
-    const res = await db.collection('todos').add({
+    await db.collection('todos').add({
       data: {
         _openid: wxContext.OPENID,
         isFinished: false,
@@ -82,6 +82,7 @@ exports.main = (event, context) => {
         break
     }
     const MAX_LIMIT = 20
+    const page = event.page ? event.page - 1 : 0
     const countResult = await db.collection('todos').where({
       _openid: wxContext.OPENID,
       ...params
@@ -89,7 +90,7 @@ exports.main = (event, context) => {
     const res = await db.collection('todos').where({
       _openid: wxContext.OPENID,
       ...params
-    }).skip((event.page || 0) * MAX_LIMIT).limit(MAX_LIMIT).get()
+    }).skip((page) * MAX_LIMIT).limit(MAX_LIMIT).get()
     console.log('why empty--------------', wxContext.OPENID, res)
     ctx.body = {
       code: 0,
