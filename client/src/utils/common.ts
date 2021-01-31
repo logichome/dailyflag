@@ -1,3 +1,5 @@
+import Taro from '@tarojs/taro'
+
 /**
  * 补零
  * @param num： 被操作数
@@ -32,4 +34,21 @@ export function showLoading(title: string = '加载中...', mask: boolean = true
       mask
     })
   }
+}
+
+/**
+ * 弹窗
+ * @param args 弹窗参数
+ */
+export function showModal(args: any) {
+  console.log('showModal', args)
+  return Taro.showModal({
+    content: '',
+    confirmText: '确定',
+    cancelText: '取消',
+    showCancel: false,
+    cancelColor: '#b3e9ff',
+    confirmColor: '#16b9c8',
+    ...args
+  })
 }

@@ -12,15 +12,19 @@ export default function TodoForm(props) {
   const start = formatDate()
   interface IFormDate {
     title: string,
-    expectDate: string,
-    missionType: MissionType
+    noticeDate: string,
+    noticeTime: string,
+    missionType: MissionType,
+    notice: Boolean
   }
   // 表单值初始化
   function initFormData(): IFormDate {
     return {
       title: '',
-      expectDate: start,
-      missionType: MissionType.normal
+      noticeDate: start,
+      noticeTime: '12:00',
+      missionType: MissionType.normal,
+      notice: false
     }
   }
   const {onSubmit, currentTodo} = props
@@ -35,7 +39,7 @@ export default function TodoForm(props) {
   }, [currentTodo])
 
   // 格式化显示的日期
-  const formatExpectDate: string = useMemo(() => formData.expectDate ? moment(formData.expectDate).format('ll') : '', [formData])
+  const formatNoticeDate: string = useMemo(() => formData.noticeDate ? moment(formData.noticeDate).format('ll') : '', [formData])
 
   // 表单修改
   function formDataChange(key, value) {
@@ -47,7 +51,7 @@ export default function TodoForm(props) {
     // 校验规则
     const rules = {
       title: [{type: FormRuleTypes.require, msg: '请输入任务概要'}],
-      expectDate: [{type: FormRuleTypes.require, msg: '请选择完成日期'}]
+      // noticeDate: [{type: FormRuleTypes.require, msg: '请选择完成日期'}]
     }
     for (const key in result) {
       // 遍历表单项
@@ -94,18 +98,37 @@ export default function TodoForm(props) {
               一般
             </View>
             <View className={`radio-item ${formData.missionType === MissionType.alternative && 'checked'}`} onClick={_ => formDataChange('missionType', MissionType.alternative)}>
-              备选
+              次要
             </View>
           </View>
         </View>
-        <View className="form-item">
-          <View className="label">完成日期</View>
-          <Picker start={start} onChange={e => formDataChange('expectDate', e.detail.value)} mode='date' value={formData.expectDate} className={`value ${!formatExpectDate && 'picker-placeholder'}`} name="expectDate">
+        {/* <View className="form-item">
+          <View className="label">定时提醒</View>
+          <View className="radio-group">
+            <View className={`radio-item ${formData.notice && 'checked'}`} onClick={_ => formDataChange('notice', true)}>
+              提醒
+            </View>
+            <View className={`radio-item ${!formData.notice && 'checked'}`} onClick={_ => formDataChange('notice', false)}>
+              不提醒
+            </View>
+          </View>
+        </View> */}
+        {formData.notice && <View className="form-item">
+          <View className="label">提醒日期</View>
+          <Picker start={start} onChange={e => formDataChange('noticeDate', e.detail.value)} mode='date' value={formData.noticeDate} className={`value ${!formatNoticeDate && 'picker-placeholder'}`} name="noticeDate">
             <View className='picker'>
-              {formatExpectDate || '怎么说也总该有个期限吧'}
+              {formatNoticeDate || '请选择提醒日期'}
             </View>
           </Picker>
-        </View>
+        </View>}
+        {formData.notice && <View className="form-item">
+          <View className="label">提醒时间</View>
+          <Picker onChange={e => formDataChange('noticeTime', e.detail.value)} mode='time' value={formData.noticeTime} className={`value ${!formatNoticeDate && 'picker-placeholder'}`} name="noticeTime">
+            <View className='picker'>
+              {formData.noticeTime || '请选择提醒时间'}
+            </View>
+          </Picker>
+        </View>}
         <View className="btns">
           <Button className="middle" type='primary' onClick={() => {
             if (checkForm(formData)) {

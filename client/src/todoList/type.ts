@@ -4,6 +4,7 @@ export interface ITodoContent {
   content?: string,
   expectDate: string,
   isFinished: boolean,
+  missionType: MissionType,
   isDeleted: boolean,
   createdAt: number,
   updateAt: number

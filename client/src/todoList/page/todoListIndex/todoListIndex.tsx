@@ -1,28 +1,28 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { View, Text, Input, Form, Button } from '@tarojs/components'
-import { ITodoContent, FilterTag } from '../../type'
-import { formatDate, showLoading } from '@/utils/common'
-import Taro, {useReachBottom} from '@tarojs/taro'
+import { View, Text, Button, MovableArea, MovableView } from '@tarojs/components'
+import { ITodoContent, FilterTag, MissionType } from '../../type'
+import { showLoading, showModal } from '@/utils/common'
+import {useReachBottom} from '@tarojs/taro'
 import moment from 'moment'
 import './todoListIndex.styl'
 import { apiGetTodoList, apiEditTodo, apiAddTodo, apiDelTodo } from '@/apis/todoList'
 import TodoForm from '../../components/TodoForm/todoForm'
 import Popup from '@/components/Popup/Popup'
+let currentPage:number = 1
 export default function Index() {
-  const date: Date = new Date()
+  // const date: Date = new Date()
   interface ITodoContentGroup {
     expectDate: string,
     list: ITodoContent[]
   }
 
-  const todayDate = formatDate(date)
   const [todoList, setTodoList] = useState<ITodoContent[]>([])  // 列表
   const [todoFormVisible, setTodoFormVisible] = useState<boolean>(false)  // 表单弹窗展示
   const [currentTodo, setCurrentTodo] = useState<ITodoContent | null>(null)  // 当前编辑的项目
-  const [spreadId, setSpreadId] = useState<string>('')  // 当前展开的项目id
-  const [currentPage, setCurrentPage] = useState<number>(1)  // 当前页码
-  const [currentFilterTag, setCurrentFilterTag] = useState<FilterTag>(FilterTag.all)  // 当前展开的项目id
-
+  // const [spreadId, setSpreadId] = useState<string>('')  // 当前展开的项目id
+  const [touchStartInfo, setTouchStartInfo] = useState<any>({}) 
+  const [moveId, setMoveId] = useState<string>('')
+  const [currentFilterTag, setCurrentFilterTag] = useState<FilterTag>(FilterTag.unfinished)  // 当前展开的项目id
   // 列表格式化
   const showList:ITodoContentGroup[] = useMemo(() => {
     // 排序
@@ -47,13 +47,21 @@ export default function Index() {
     return groupList
   }, [todoList])
 
+  // 触底加载
   useReachBottom(() => {
-    console.log('onReachBottom')
+    console.log('onReachBottom', currentPage)
+    if (currentPage > 0) {
+      currentPage += 1
+      getTodoList()
+    } else {
+      console.log('到底了~')
+    }
   })
 
   // 初始化
   useEffect(() => {
     setTodoList([])
+    currentPage = 1
     getTodoList()
   }, [currentFilterTag])
 
@@ -63,22 +71,53 @@ export default function Index() {
   }, [todoList])
 
   // 获取列表
-  async function getTodoList(page :number = 1) {
+  async function getTodoList() {
     showLoading()
     try {
-      const data: any  = await apiGetTodoList({filter: currentFilterTag, page})
-      console.log('datadatadata', data)
-      setTodoList(data.list)
+      const data: any  = await apiGetTodoList({filter: currentFilterTag, page: currentPage})
+      console.log('page', currentPage, 'data', data)
+      setTodoList(currentPage === 1 ? data.list : todoList.concat(data.list))
+      if (data.list.length < 20) {
+        currentPage = -1
+      }
     } catch (error) {
       console.error(error)
     }
     showLoading('close')
   }
 
-  // 展开详情
-  function spreadTodo(id: string): void {
-    setSpreadId(spreadId === id ? '' : id)
+  // 滑动开始
+  function touchS (id: string, e: any): void {
+    const startX = e.touches[0].clientX
+    setTouchStartInfo({
+      id,
+      startX
+    })
   }
+
+  // 右滑
+  function touchM (e: any): void {
+    const currenX = e.touches[0].clientX
+    const distance = currenX - touchStartInfo.startX
+    if (distance < -35) {
+      setMoveId(touchStartInfo.id)
+      // setSpreadId('')
+    }
+    if (distance > 35) {
+      setMoveId('')
+    }
+  }
+
+  // 展开详情
+  // function spreadTodo(id: string): void {
+  //   // setSpreadId(spreadId === id ? '' : id)
+  //   if (spreadId === id) {
+  //     setSpreadId('')
+  //   } else {
+  //     setSpreadId(id)
+  //     setMoveId('')
+  //   }
+  // }
 
   // 增加项目
   function addTodo(): void {
@@ -89,15 +128,20 @@ export default function Index() {
 
   // 删除项目
   async function deleteTodo(id: string) {
-    Taro.showModal({
-      content: '咕咕咕？'
+    showModal({
+      content: '咕咕咕？',
+      confirmText: '咕咕咕！',
+      cancelText: '容我三思',
+      showCancel: true
     }).then(async res => {
       if (res.confirm) {
         console.log('deleteTodo')
         showLoading()
         await apiDelTodo({id})
+        currentPage = 1
         await getTodoList()
-        setSpreadId('')
+        setMoveId('')
+        // setSpreadId('')
         showLoading('close')
       }
     })
@@ -108,6 +152,7 @@ export default function Index() {
     console.log('editTodo')
     setCurrentTodo(todoList.find(todo => todo.id === id) || null)
     setTodoFormVisible(true)
+    setMoveId('')
   }
 
   // 完成项目
@@ -115,8 +160,10 @@ export default function Index() {
     console.log('finishTodo')
     showLoading()
     await apiEditTodo({id, isFinished: true})
+    currentPage = 1
     await getTodoList()
-    setSpreadId('')
+    // setSpreadId('')
+    setMoveId('')
     showLoading('close')
   }
 
@@ -126,6 +173,7 @@ export default function Index() {
     setTodoFormVisible(false)
     showLoading()
     await apiEditTodo(formDate)
+    currentPage = 1
     await getTodoList()
     showLoading('close')
   }
@@ -136,6 +184,7 @@ export default function Index() {
     setTodoFormVisible(false)
     showLoading()
     await apiAddTodo(formDate)
+    currentPage = 1
     await getTodoList()
     showLoading('close')
   }
@@ -144,7 +193,7 @@ export default function Index() {
   function changeFilterTag(tag: FilterTag) {
     if (tag !== currentFilterTag) {
       setCurrentFilterTag(tag)
-      setSpreadId('')
+      // setSpreadId('')
     }
   }
 
@@ -158,10 +207,10 @@ export default function Index() {
       <View className="menu">
         <Button className="small add" type='primary' onClick={addTodo}>新增</Button>
         <View className="filter-list">
-          <Button className="small" key="all" type={currentFilterTag === FilterTag.all ? 'primary' : 'default'} onClick={() => changeFilterTag(FilterTag.all)}>全部</Button>
-          <Button className="small" key="finished" type={currentFilterTag === FilterTag.finished ? 'primary' : 'default'} onClick={() => changeFilterTag(FilterTag.finished)}>已完成</Button>
           <Button className="small" key="unfinished" type={currentFilterTag === FilterTag.unfinished ? 'primary' : 'default'} onClick={() => changeFilterTag(FilterTag.unfinished)}>未完成</Button>
-          <Button className="small" key="rubbish" type={currentFilterTag === FilterTag.rubbish ? 'primary' : 'default'} onClick={() => changeFilterTag(FilterTag.rubbish)}>垃圾桶</Button>
+          {/* <Button className="small" key="all" type={currentFilterTag === FilterTag.all ? 'primary' : 'default'} onClick={() => changeFilterTag(FilterTag.all)}>全部</Button> */}
+          <Button className="small" key="finished" type={currentFilterTag === FilterTag.finished ? 'primary' : 'default'} onClick={() => changeFilterTag(FilterTag.finished)}>已完成</Button>
+          {/* <Button className="small" key="rubbish" type={currentFilterTag === FilterTag.rubbish ? 'primary' : 'default'} onClick={() => changeFilterTag(FilterTag.rubbish)}>垃圾桶</Button> */}
         </View>
       </View>
       {/* 列表 */}
@@ -170,32 +219,39 @@ export default function Index() {
         {showList.map((group, index) => (<View key={index} className="group-item">
           <View className="group-date">
             <Text>{moment(group.expectDate).format('ll')}</Text>
-            {moment(group.expectDate) < moment(todayDate) && <Text className="t">已过期</Text>}
           </View>
-          {group.list.map(todoItem => <View className="todo-item" key={todoItem.id}>
-            <View className="item-main" onClick={() => spreadTodo(todoItem.id)}>
-              <View className={`todo-item-title ${todoItem.isFinished && 'finished'}`}>{todoItem.title}</View>
-              <View className="finish-status">{todoItem.isFinished ? '已完成' : '未完成'}</View>
-            </View>
-            <View className={`item-detail ${spreadId === todoItem.id && 'show'}`}>
-              <View className="item-info">
-                <View className="info-item">
-                  <View className="info-item-label">创建时间</View>
-                  <View className="info-item-value">{moment(todoItem.createdAt).startOf('hour').fromNow()}</View>
+          <View className="group-list">
+            {group.list.map(todoItem => <MovableArea className={`todo-item  ${moveId === todoItem.id && 'movable-active'}`} key={todoItem.id}>
+              <MovableView  onTouchStart={e => touchS(todoItem.id, e)} onTouchMove={e => touchM(e)} direction="horizontal" className="movable-view" damping={0}>
+                <View className={`todo-item-container`}>
+                  <View className="item-tag">{
+                    {
+                      [MissionType.important]: '重要',
+                      [MissionType.normal]: '一般',
+                      [MissionType.alternative]: '次要',
+                  }[todoItem.missionType]
+                  }</View>
+                  <View className="item-main">
+                    <View className={`todo-item-title ${todoItem.isFinished && 'finished'}`}>{todoItem.title}</View>
+                    <View className="finish-status">{todoItem.isFinished ? '已完成' : ''}</View>
+                  </View>
                 </View>
-              </View>
-              <View className="btns">
-                <View className="left">
-                  {!todoItem.isFinished && <Button className="small" type='primary' onClick={() => {finishTodo(todoItem.id)}}>完成</Button>}
-                  <Button className="small" type='default' onClick={() => {editTodo(todoItem.id)}}>编辑</Button>
-                  <Button className="small" type='warn' onClick={() => {deleteTodo(todoItem.id)}}>删除</Button>
+                <View className={`todo-item-right`}>
+                  <View className="right-btns">
+                    <View className="btn-item" onClick={() => {finishTodo(todoItem.id)}}>
+                      <View className="t">完成</View>
+                    </View>
+                    <View className="btn-item default" onClick={() => {editTodo(todoItem.id)}}>
+                      <View className="t">编辑</View>
+                    </View>
+                    <View className="btn-item error" onClick={() => {deleteTodo(todoItem.id)}}>
+                      <View className="t">删除</View>
+                    </View>
+                  </View>
                 </View>
-                <View className="right">
-                  <View className="fold-btn" onClick={() => spreadTodo(todoItem.id)}>收起</View>
-                </View>
-              </View>
-            </View>
-          </View>)}
+              </MovableView>
+            </MovableArea>)}
+          </View>
         </View>))}
       </View>
     </View>

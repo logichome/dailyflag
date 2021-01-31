@@ -83,15 +83,19 @@ exports.main = (event, context) => {
     }
     const MAX_LIMIT = 20
     const page = event.page ? event.page - 1 : 0
-    const countResult = await db.collection('todos').where({
+    const countResult = await db.collection('todos')
+    .orderBy('createdAt', 'desc')
+    .where({
       _openid: wxContext.OPENID,
       ...params
-    }).count()
+    })
+    .count()
     const res = await db.collection('todos').where({
       _openid: wxContext.OPENID,
       ...params
-    }).skip((page) * MAX_LIMIT).limit(MAX_LIMIT).get()
-    console.log('why empty--------------', wxContext.OPENID, res)
+    })
+    .skip((page) * MAX_LIMIT).limit(MAX_LIMIT).get()
+    console.log('get--------------', wxContext.OPENID, res)
     ctx.body = {
       code: 0,
       data: {
