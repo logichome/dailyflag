@@ -84,7 +84,6 @@ exports.main = (event, context) => {
     const MAX_LIMIT = 20
     const page = event.page ? event.page - 1 : 0
     const countResult = await db.collection('todos')
-    .orderBy('createdAt', 'desc')
     .where({
       _openid: wxContext.OPENID,
       ...params
@@ -94,6 +93,7 @@ exports.main = (event, context) => {
       _openid: wxContext.OPENID,
       ...params
     })
+    .orderBy('createdAt', 'desc')
     .skip((page) * MAX_LIMIT).limit(MAX_LIMIT).get()
     console.log('get--------------', wxContext.OPENID, res)
     ctx.body = {

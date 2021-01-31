@@ -26,7 +26,7 @@ export default function Index() {
   // 列表格式化
   const showList:ITodoContentGroup[] = useMemo(() => {
     // 排序
-    todoList.sort((a, b) => +a.id - +b.id)
+    todoList.sort((a, b) => a.updateAt - b.updateAt)
     // 已完成的放最下面
     todoList.sort(item => item.isFinished ? 1 : -1)
     let groupList: ITodoContentGroup[] = []
@@ -167,6 +167,18 @@ export default function Index() {
     showLoading('close')
   }
 
+  // 恢复项目
+  async function renewTodo(id: string) {
+    console.log('renewTodo')
+    showLoading()
+    await apiEditTodo({id, isFinished: false})
+    currentPage = 1
+    await getTodoList()
+    // setSpreadId('')
+    setMoveId('')
+    showLoading('close')
+  }
+
   // 编辑提交
   async function editSubmit(formDate) {
     console.log('editSubmit')
@@ -238,9 +250,11 @@ export default function Index() {
                 </View>
                 <View className={`todo-item-right`}>
                   <View className="right-btns">
-                    <View className="btn-item" onClick={() => {finishTodo(todoItem.id)}}>
+                    {todoItem.isFinished ? <View className="btn-item" onClick={() => {renewTodo(todoItem.id)}}>
+                      <View className="t">恢复</View>
+                    </View> : <View className="btn-item" onClick={() => {finishTodo(todoItem.id)}}>
                       <View className="t">完成</View>
-                    </View>
+                    </View>}
                     <View className="btn-item default" onClick={() => {editTodo(todoItem.id)}}>
                       <View className="t">编辑</View>
                     </View>
