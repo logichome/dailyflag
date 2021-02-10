@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { View, Text, Button, MovableArea, MovableView } from '@tarojs/components'
-import { ITodoContent, FilterTag, MissionType } from '../../type'
+import { ITodoContent, FilterTag, MissionType } from '@/todoList/type'
 import { showLoading, showModal } from '@/utils/common'
 import {useReachBottom} from '@tarojs/taro'
 import moment from 'moment'
 import './todoListIndex.styl'
 import { apiGetTodoList, apiEditTodo, apiAddTodo, apiDelTodo } from '@/apis/todoList'
-import TodoForm from '../../components/TodoForm/todoForm'
+import TodoForm from '@/todoList/components/TodoForm/TodoForm'
 import Popup from '@/components/Popup/Popup'
 let currentPage:number = 1
 export default function Index() {

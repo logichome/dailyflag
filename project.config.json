@@ -43,5 +43,25 @@
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
-  "condition": {}
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "clockList/page/todoListIndex/todoListIndex",
+          "pathName": "clockList/page/clockListIndex/clockListIndex",
+          "query": "",
+          "scene": null
+        }
+      ]
+    }
+  }
 }

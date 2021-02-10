@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro'
-import {ITodoContent, FilterTag}  from '../todoList/type'
-import request from '../wxCloud/request'
+import {ITodoContent, FilterTag}  from '@/todoList/type'
+import request from '@/wxCloud/request'
 export const apiGetTodoList = (data) => {
   // const originList = Taro.getStorageSync('TODO_LIST') || []
   // const filterList = originList.filter(item => {

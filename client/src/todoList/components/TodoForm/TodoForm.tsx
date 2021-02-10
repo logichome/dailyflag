@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { View, Picker, Input, Form, Button } from '@tarojs/components'
 import { formatDate } from '@/utils/common'
-import { MissionType } from '../../type'
+import { MissionType } from '@/todoList/type'
 
 import Taro from '@tarojs/taro'
 import moment from 'moment'

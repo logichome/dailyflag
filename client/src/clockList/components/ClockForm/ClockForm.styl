@@ -1,0 +1,38 @@
+@import '~@/style/varivles'
+.title
+  font-size 34px
+  text-align center
+  line-height 48px
+  padding-bottom 20px
+.todo-form
+  display block
+  box-sizing border-box
+  .form-item
+    display flex
+    align-items center
+    justify-content space-between
+    border-bottom $normalBorder
+    line-height 100px
+    color $fontColor
+    font-size 30px
+    .label
+      width 120px
+    .value
+      width 500px
+  .btns
+    padding-top 20rpx
+  .radio-group
+    display flex
+    align-items center
+    width 500px
+    .radio-item
+      line-height 60px;
+      padding: 0 20px
+      margin-right 20px
+      border-radius 6px
+      box-sizing border-box
+      border 1px solid $mainColor
+      color $mainColor
+      &.checked
+        background-color $mainColor
+        color #fff
