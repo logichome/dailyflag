@@ -137,10 +137,10 @@ export default function Index() {
       if (res.confirm) {
         console.log('deleteTodo')
         showLoading()
+        setMoveId('')
         await apiDelTodo({id})
         currentPage = 1
         await getTodoList()
-        setMoveId('')
         // setSpreadId('')
         showLoading('close')
       }
@@ -159,11 +159,11 @@ export default function Index() {
   async function finishTodo(id: string) {
     console.log('finishTodo')
     showLoading()
+    setMoveId('')
     await apiEditTodo({id, isFinished: true})
     currentPage = 1
     await getTodoList()
     // setSpreadId('')
-    setMoveId('')
     showLoading('close')
   }
 
@@ -171,11 +171,11 @@ export default function Index() {
   async function renewTodo(id: string) {
     console.log('renewTodo')
     showLoading()
+    setMoveId('')
     await apiEditTodo({id, isFinished: false})
     currentPage = 1
     await getTodoList()
     // setSpreadId('')
-    setMoveId('')
     showLoading('close')
   }
 

@@ -86,7 +86,7 @@ export default function TodoForm(props) {
         <View className="title">{currentTodo ? '编辑' : '新增'}</View>
         <View className="form-item">
           <View className="label">任务概要</View>
-          <Input onInput={e => formDataChange('title', e.detail.value)} className="value" type='text' name="title" value={formData.title} placeholder='起个惊天地泣鬼神的标题' maxlength={14}/>
+          <Input onInput={e => formDataChange('title', e.detail.value)} className="value" type='text' name="title" value={formData.title} placeholder='起个惊天地泣鬼神的标题' maxlength={18}/>
         </View>
         <View className="form-item">
           <View className="label">任务类型</View>
