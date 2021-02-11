@@ -38,3 +38,13 @@ export const apiDelClock = (data: any) => {
     }
   })
 }
+
+export const apiCloskIn = (data: any) => {
+  return request({
+    name: 'clocks',
+    data: {
+      $url: 'clockin',
+      ...data
+    }
+  })
+}

@@ -4,7 +4,7 @@ import { showLoading, showModal } from '@/utils/common'
 import {useReachBottom} from '@tarojs/taro'
 import moment from 'moment'
 import './clockListIndex.styl'
-import { apiGetClockList, apiEditClock, apiAddClock, apiDelClock } from '@/apis/clockList'
+import { apiGetClockList, apiEditClock, apiAddClock, apiDelClock, apiCloskIn } from '@/apis/clockList'
 import { IClockContent } from '@/clockList/type'
 import ClockForm from '@/clockList/components/ClockForm/ClockForm'
 import Popup from '@/components/Popup/Popup'
@@ -27,12 +27,12 @@ export default function Index() {
     }
   })
 
-  // // 初始化
-  // useEffect(() => {
-  //   setclockList([])
-  //   currentPage = 1
-  //   getclockList()
-  // })
+  // 初始化
+  useEffect(() => {
+    setclockList([])
+    currentPage = 1
+    getclockList()
+  }, [])
 
   // 获取列表
   async function getclockList() {
@@ -108,20 +108,25 @@ export default function Index() {
     setMoveId('')
   }
 
-  // 完成项目
+  // 打卡
   async function finishclock(id: string) {
-    console.log('finishclock')
-    showLoading()
-    await apiEditClock({id, isFinished: true})
-    currentPage = 1
-    await getclockList()
-    // setSpreadId('')
-    setMoveId('')
+    try {
+      console.log('finishclock')
+      showLoading()
+      await apiCloskIn({id})
+      currentPage = 1
+      await getclockList()
+      // setSpreadId('')
+      setMoveId('')
+    } catch (error) {
+      console.error(error)
+    }
     showLoading('close')
   }
 
   // 恢复项目
   async function renewclock(id: string) {
+    return
     console.log('renewclock')
     showLoading()
     await apiEditClock({id, isFinished: false})
@@ -172,7 +177,7 @@ export default function Index() {
           <MovableView  onTouchStart={e => touchS(clockItem.id, e)} onTouchMove={e => touchM(e)} direction="horizontal" className="movable-view" damping={0}>
             <View className={`clock-item-container`}>
               <View className="item-main">
-                <View className={`clock-item-title ${clockItem.isFinished && 'finished'}`}>{clockItem.title}</View>
+                <View className={`clock-item-title ${clockItem.isFinished && 'finished'}`}>{clockItem.title || '-'}</View>
                 <View className="finish-status">{clockItem.isFinished ? '已完成' : ''}</View>
               </View>
             </View>
