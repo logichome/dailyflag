@@ -1,93 +1,27 @@
-.menu
-  position fixed
-  z-index 2
-  top 0
-  left 0
-  width 100%
-  background-color #fff
-  box-sizing border-box
-  padding 20px 40px
-  border-bottom 1px solid #ddd
-  display flex
-  align-items center
-  justify-content space-between
-  .filter-list
+@import '~@/style/varivles'
+
+page
+  background-color #f7f7f7
+.index
+  padding 20px
+  .header
     display flex
     align-items center
-    button
-      border-radius 0
-      &:first-of-type
-        border-radius 10px 0 0 10px
-      &:last-of-type
-        border-radius 0 10px 10px 0
-.todo-list
-  padding 120px 40px 20px
-  .no-data
-    text-align center
-    padding 40px
-    color: #999
-    font-size 26px
-  .group-item
-    .group-date
-      padding 20px 0
-      color #999
-      font-size: 26px
-  .todo-item
-    border 1px solid #ddd
-    border-radius 10px
-    padding 0 20px
-    margin-bottom 20px
-    .todo-item-title.finished
-      text-decoration line-through
-      color #999
-    .item-main
-      font-size 32px
-      color #333
-      padding 20px
-      display flex
-      align-items center
-      justify-content space-between
-      .finish-status
-        color #999
-        font-size 26px
-    .item-detail
-      .item-info
-        padding 20px 20px 10px
-        .info-item
-          display flex
-          align-items center
-          justify-content space-between
-          font-size 26px
-          line-height 48px
-          color #999
-      &::before
-        content ''
-        display block
-        width 0
-        // background-color #ddd
-        border-bottom 2rpx solid #ddd
-        transition width 0.3s
-        box-sizing border-box
-        margin 0 auto
-      // border-top 1px solid transparent
-      max-height 0
-      overflow hidden
-      transition all 0.3s
-      .btns
-        padding 20px 20px
-        display flex
-        align-items center
-        justify-content space-between
-        .left
-          display flex
-          align-items center
-        .right
-          font-size 28rpx
-          color #999
-      button
-        margin-right 20px
-      &.show
-        // border-top 1px solid #ddd
-        max-height 300px
-        &::before
-          width 650px
+    background-color $mainColor
+    border-radius 12px
+    justify-content center
+    padding 40px 0;
+    .header-item
+      text-align center
+      padding 0 100px
+      .header-icon
+        color: #fff
+        font-size: 50px
+        width 100px
+        height 100px
+        line-height 100px
+      .header-txt
+        padding-top: 20px
+        color: #fff
+        font-size: 32px
+        line-height 48px

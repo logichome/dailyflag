@@ -1,12 +1,13 @@
 export default {
   pages: [
     'pages/index/index',
-    'todoList/page/todoListIndex/todoListIndex'
+    'todoList/page/todoListIndex/todoListIndex',
+    'clockList/page/clockListIndex/clockListIndex',
   ],
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: 'WeChat',
+    navigationBarTitleText: 'DAILY FLAG',
     navigationBarTextStyle: 'black'
   }
 }

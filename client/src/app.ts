@@ -2,6 +2,7 @@ import { Component } from 'react'
 import { initCloud } from '@/wxCloud'
 import '@/utils/moment'
 import './app.styl'
+import './assets/iconfont/iconfont.css'
 class App extends Component {
 
   componentDidMount () {
