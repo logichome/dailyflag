@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "14112236",
+      "name": "top",
+      "font_class": "top",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "18925882",
+      "name": "herbal Medicine",
+      "font_class": "herbalMedicine",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
       "icon_id": "4765721",
       "name": "check-circle",
       "font_class": "check-circle",

@@ -3,6 +3,7 @@ export default {
     'pages/index/index',
     'todoList/page/todoListIndex/todoListIndex',
     'clockList/page/clockListIndex/clockListIndex',
+    'tools/herbalMedicine/herbalMedicine'
   ],
   window: {
     backgroundTextStyle: 'light',

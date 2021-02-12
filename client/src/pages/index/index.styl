@@ -1,7 +1,7 @@
 @import '~@/style/varivles'
 
 page
-  background-color #f7f7f7
+  background-color $greyPageColor
 .index
   padding 20px
   .header
@@ -25,3 +25,34 @@ page
         color: #fff
         font-size: 32px
         line-height 48px
+  .main
+    padding 20px 0
+    .main-block
+      background-color #fff
+      border-radius 12px
+      padding 20px
+      .block-title
+        font-size 26px
+        color $weekFontColor
+        padding 10px 20px 20px
+      .block-list
+        display flex
+        flex-wrap wrap
+        // justify-content space-around
+      .block-item
+        width 166px
+        margin-bottom 20px
+        .block-item-icon
+          font-size 68px
+          text-align center
+          width 100px
+          height 100px
+          line-height 100px
+          margin 0 auto
+          &.icon-herbalMedicine
+            color #63bd89
+        .block-item-name
+          text-align center
+          color $fontColor
+          font-size 28px
+          line-height 36px

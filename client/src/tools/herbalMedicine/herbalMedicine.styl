@@ -1,0 +1,77 @@
+@import '~@/style/varivles'
+page
+  background-color $greyPageColor
+.herbal
+  padding 20px
+  .top-btn
+    position fixed
+    width 100%
+    top 0
+    left 0
+    background-color #fff
+    text-align center
+    line-height 80px
+    color $mainColor
+    font-size 50px
+    box-shadow 0px 0px 10px 6px #ddd
+  .filter
+    background-color #fff
+    border-radius 12px
+    padding-bottom 20px
+    .attribute
+    .use
+    .chosen
+      .tag-title
+        font-size 26px
+        color $weekFontColor
+        padding 20px 20px 0
+      .tag-list
+        display flex
+        align-items center
+        flex-wrap wrap
+        padding-left 20px
+        .tag-item
+          font-size 28px
+          line-height 42px
+          padding 6px 12px 4px
+          box-sizing border-box
+          border-radius 8px
+          border 1px solid $mainColor
+          background-color #fff
+          color $mainColor
+          margin-right 12px
+          margin-top 12px
+          &.checked
+            border 1px solid $mainColor
+            color #fff
+            background-color $mainColor
+  .result
+    .list
+      padding 20px 0 50px
+      .result-item
+        background-color #fff
+        border-radius 12px
+        padding 20px
+        margin-bottom 20px
+        .item-name
+          font-size 34px
+          line-height 50px
+          color $fontColor
+          font-weight bold
+        .info-line
+          display flex
+          align-items start
+          font-size 28px
+          padding-top 10px
+          line-height 42px
+          .info-label
+            width 100px
+            color $weekFontColor
+          .info-value
+            max-width 560px
+            color $mainColor
+    .no-Data
+      text-align center
+      padding 40px
+      font-size 30px
+      color $weekFontColor
