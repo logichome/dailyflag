@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { View } from '@tarojs/components'
+import { View, Input } from '@tarojs/components'
 import './herbalMedicine.styl'
-import { HERBAL_MEDICINE, IHerbMedicine } from './base'
+import { IHerbMedicine } from '@/tools/herbalMedicine/base'
+import SearchBar from '@/components/SearchBar/SearchBar'
 import { showLoading } from '@/utils/common'
 import { getHerbMedicine } from '@/apis/config'
 export default function Index() {
@@ -44,7 +45,7 @@ export default function Index() {
 
   // tag初始化
   async function initPage() {
-    let res: Array<IHerbMedicine> = HERBAL_MEDICINE
+    let res: Array<IHerbMedicine> = []
     try {
       showLoading()
       res = await getHerbMedicine() as Array<IHerbMedicine>
@@ -91,25 +92,30 @@ export default function Index() {
       })
     }, 0)
   }
-
+  function searchInputChange(val) {
+    console.log('searchInputChange', val)
+  }
 
   return (
     <View className="herbal">
       <View className="filter">
-        <View className="attribute">
-          <View className="tag-title">属性</View>
-            <View className="tag-list">
-              {attributeTagList.map((item, index) => <View key={index} onClick={_ => chooseTag(item)} className={`${chosenTag.some(tag => tag.id === item.id) && 'checked'} tag-item`}>
+        <SearchBar inputChange={searchInputChange} />
+        <View className="filter-tags">
+          <View className="attribute">
+            <View className="tag-title">属性</View>
+              <View className="tag-list">
+                {attributeTagList.map((item, index) => <View key={index} onClick={_ => chooseTag(item)} className={`${chosenTag.some(tag => tag.id === item.id) && 'checked'} tag-item`}>
+                  <View className="t">{item.value}</View>
+                </View>)}
+              </View>
+          </View>
+          <View className="use">
+            <View className="tag-title">用途</View>
+              <View className="tag-list">
+              {useTagList.map((item, index) => <View key={index} onClick={_ => chooseTag(item)} className={`${chosenTag.some(tag => tag.id === item.id) && 'checked'} tag-item`}>
                 <View className="t">{item.value}</View>
               </View>)}
             </View>
-        </View>
-        <View className="use">
-          <View className="tag-title">用途</View>
-            <View className="tag-list">
-            {useTagList.map((item, index) => <View key={index} onClick={_ => chooseTag(item)} className={`${chosenTag.some(tag => tag.id === item.id) && 'checked'} tag-item`}>
-              <View className="t">{item.value}</View>
-            </View>)}
           </View>
         </View>
         {chosenTag.length > 0 && <View className="chosen">
@@ -122,7 +128,6 @@ export default function Index() {
         </View>}
       </View>
       {topBtnVisible && <View className="top-btn icon-top iconfont" onClick={_ => wx.pageScrollTo({scrollTop: 0})}>
-        
       </View>}
       <View className="result">
         {filterResult.length ? <View className="list">

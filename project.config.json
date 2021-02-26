@@ -61,6 +61,11 @@
           "pathName": "clockList/page/clockListIndex/clockListIndex",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "tools/herbalMedicine/herbalMedicine",
+          "pathName": "tools/herbalMedicine/herbalMedicine",
+          "scene": null
         }
       ]
     }
